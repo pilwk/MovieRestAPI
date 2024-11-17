@@ -1,6 +1,7 @@
 services:
   db:
-    image: postgres:alpine
+    # image: postgres:alpine
+    build: .
     container_name: postgres_db
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
