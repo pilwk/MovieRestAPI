@@ -1,4 +1,3 @@
--- Active: 1731861477590@@127.0.0.1@5432@postgres
 -- Create the `genre` table
 CREATE TABLE genre (
     genre_id SERIAL PRIMARY KEY,
@@ -20,9 +19,12 @@ CREATE TABLE movie (
     director_name VARCHAR(100) REFERENCES director(director_name)
 );
 
--- limitation to single genre per movie
--- add junction table for movie <- movie_genre if needed later
-
+-- Create junction table for movie <- movie_genre if needed later
+CREATE TABLE movie_genre (
+  movie_id INTEGER REFERENCES movie(movie_id),
+  genre_id INTEGER REFERENCES genre(genre_id),
+  PRIMARY KEY (movie_id, genre_id)
+);
 
 -- Create the `user` table
 CREATE TABLE user_account (
