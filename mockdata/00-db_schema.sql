@@ -31,14 +31,14 @@ CREATE TABLE user_account (
     user_id SERIAL PRIMARY KEY,
     username VARCHAR(50) UNIQUE NOT NULL,
     password_hash VARCHAR(255) NOT NULL,
-    name VARCHAR(100) NOT NULL,
+    name VARCHAR(100),
     dob DATE
 );
 
 -- Create the `favourite` table
 CREATE TABLE favourite (
     favourite_id SERIAL PRIMARY KEY,
-    movie_id INTEGER REFERENCES movie(movie_id),
+    movie_id INTEGER REFERENCES movie(movie_id) ON DELETE CASCADE,
     user_id INTEGER REFERENCES user_account(user_id)
 );
 
@@ -46,7 +46,7 @@ CREATE TABLE favourite (
 CREATE TABLE review (
     review_id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES user_account(user_id),
-    movie_id INTEGER REFERENCES movie(movie_id),
+    movie_id INTEGER REFERENCES movie(movie_id) ON DELETE CASCADE,
     rating INTEGER,
     review_text TEXT
 );

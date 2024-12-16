@@ -1,7 +1,8 @@
 services:
   db:
-    # image: postgres:alpine
-    build: .
+    build:
+      context: .
+      target: pg_db
     container_name: postgres_db
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
@@ -11,6 +12,29 @@ services:
       - "${POSTGRES_PORT}:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - pg_node_network
+
+  node_server:
+    build:
+      context: .
+      target: node_server
+    container_name: MovieREST_API
+    user: "node"
+    ports: 
+      - "${PORT}:${PORT}"
+    environment:
+      - POSTGRES_HOST_DOCKER=db
+      - POSTGRES_PORT=${POSTGRES_PORT}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - PORT=${PORT}
+    networks:
+      - pg_node_network
 
 volumes:
   postgres_data:
+
+networks:
+  pg_node_network:
